@@ -1,8 +1,14 @@
 # Blog
 基于SSM的个人博客系统
 
+用到 Spring , mybatis, SpringMvc, bootstrap, mysql, jsp等等。
+
 大概界面不怎么好看，主要功能基本实现。
 
+演示地址：http://112.74.176.226/blogger/main
+
+运行环境： tomcat9 + jdk8.0 + maven
+如果有需要，下载后，导入sql，配置好 jdbc.properties即可运行
 
 
 ![images2](https://github.com/DayRain/Blog/blob/master/img/%E4%B8%BB%E9%A1%B5.png)
