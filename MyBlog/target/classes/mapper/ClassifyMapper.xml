@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ph.mapper.ClassifyMapper">
+    <select id="queryAllClassifyWithBloggerId" resultType="com.ph.pojo.Classify">
+        select * from classify where blogger_id=#{bloggerId};
+    </select>
+    <insert id="addClassify">
+        insert into classify(classify_name,blogger_id)values(#{classifyName},#{bloggerId});
+    </insert>
+    <select id="countClassify" resultType="Integer">
+        select count(*)from classify where classify_id=#{classifyId};
+    </select>
+    <select id="countClassifyByName" resultType="Integer">
+        select count(*)from classify where classify_name=#{classifyName};
+    </select>
+</mapper>

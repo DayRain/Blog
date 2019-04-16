@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:component-scan base-package="com.ph.mapper">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--引入数据库配置文件-->
+    <context:property-placeholder location="classpath:db.properties"/>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <!--如果有需要，把所有属性写道properties文件中-->
+        <!--c3po连接池的私有属性-->
+        <property name="maxPoolSize" value="30"/>
+        <property name="minPoolSize" value="10"/>
+        <!--连接后不自动commit-->
+        <property name="autoCommitOnClose" value="true"/>
+        <!--获取链接超时时间-->
+        <property name="checkoutTimeout" value="100000"/>
+        <!--获取连接失败重试次数-->
+        <property name="acquireRetryAttempts" value="2"/>
+    </bean>
+
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:mapper/**/*.xml"/>
+        <property name="configuration">
+            <bean class="org.apache.ibatis.session.Configuration">
+                <!--可以加入驼峰命名，其他的mybatis配置也就是mybatis.cfg.xml的相关方法也可以转移到这-->
+                <property name="mapUnderscoreToCamelCase" value="true"/>
+            </bean>
+        </property>
+    </bean>
+    <!--持久层接口-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.ph.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean"/>
+    </bean>
+
+    <!--事务管理 使用数据源事务管理类进行管理-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--确定事务管理的策略 transaction-manager:指向上面的transactionMange-->
+    <tx:advice transaction-manager="transactionManager" id="transactionInterceptor">
+        <!--事务处理的相关值以及它的传播性-->
+        <tx:attributes>
+            <!--查询相关配置为只读 select,get,query开头-->
+            <tx:method name="select*" read-only="true"/>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="query*" read-only="true"/>
+            <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--注解进行事务管理-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+</beans>

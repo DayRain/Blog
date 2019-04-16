@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="MyBlog:war">
+    <output-path>$PROJECT_DIR$/MyBlog/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>MyBlog</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="MyBlog.war">
+      <element id="artifact" artifact-name="MyBlog:war exploded" />
+    </root>
+  </artifact>
+</component>

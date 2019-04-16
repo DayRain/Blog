@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!--引入其他spring配置文件-->
+    <import resource="classpath:spring/spring-*.xml"/>
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--比如要拦截User（这里暂时用Test）模块下的会话（但是需要开放登录权限）-->
+            <mvc:mapping path="/blogger/**/*"/>
+            <mvc:mapping path="/article/**/*"/>
+            <mvc:mapping path="/classify/**/*"/>
+            <mvc:mapping path="/comment/**/*"/>
+            <mvc:mapping path="/message/**/*"/>
+            <!--排除登录这个URI-->
+            <mvc:exclude-mapping path="/blogger/main"/>
+            <mvc:exclude-mapping path="/blogger/login"/>
+            <bean class="com.ph.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+</beans>

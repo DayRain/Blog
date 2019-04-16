@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ph.mapper.ArticleMapper">
+    <select id="selectArticleByBloggerId" resultType="com.ph.pojo.Article">
+        select * from article where writer_id = #{bloggerId} order by article_create_time desc ;
+    </select>
+    <insert id="insertArticle">
+        INSERT INTO article(article_title,writer_id,article_content,article_create_time,classify_name)
+        VALUES(#{articleTitle},#{writerId},#{articleContent},#{articleCreateTime},#{classifyName});
+    </insert>
+    <update id="delArticleById">
+        delete from article where article_id = #{articleId}
+    </update>
+    <select id="selectArticlesAfterPaging" resultType="com.ph.pojo.Article">
+        select * from article where writer_id = #{bloggerId} order by article_id desc limit #{beforePages},#{articlesOfpage};
+    </select>
+    <select id="getArticleByArticleId" resultType="com.ph.pojo.Article">
+        select * from article where article_id = #{articleId};
+    </select>
+    <select id="countArticlesByBloggerId" resultType="Integer">
+        select count(*)from article where writer_id = #{bloggerId};
+    </select>
+    <select id="selectByPage" resultType="com.ph.pojo.Article">
+        select *
+        from article where writer_id= #{bloggerId} order by article_id desc limit #{start},#{size};
+    </select>
+    <select id="countArticlesSearchByBloggerId" resultType="Integer">
+        select count(*)
+        from article where writer_id=#{bloggerId} and article_title like concat("%",#{keyWords},"%");
+    </select>
+    <select id="selectArticlesSearchByPage" resultType="com.ph.pojo.Article">
+        select *
+        from article where writer_id=#{bloggerId} and article_title like concat("%",#{keyWords},"%") order by article_id desc limit #{start},#{pageSize};
+    </select>
+    <update id="changeStatus">
+        update article set article_pageview=article_pageview+1 where article_id=#{articleId};
+    </update>
+    <update id="updateArticle">
+        update article set article_title=#{articleTitle},article_content=#{articleContent},classify_name=#{classifyName}
+          where article_id=#{articleId};
+    </update>
+    <select id="getArticlesByClassifyName" resultType="com.ph.pojo.Article">
+        select * from article where classify_name=#{classifyName} and writer_id = #{bloggerId} order by article_id desc;
+    </select>
+    <select id="countArticlesByClassifyName" resultType="Integer">
+        select count(*) from article where classify_name=#{classifyName} and writer_id = #{bloggerId};
+    </select>
+    <select id="selectArticlesByClassifyName" resultType="com.ph.pojo.Article">
+       select *from article where writer_id=#{bloggerId} and classify_name=#{classifyName}  order by article_id desc limit #{start},#{pageSize};
+    </select>
+</mapper>

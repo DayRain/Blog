@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="MyBlog">
+    <output-path>$PROJECT_DIR$/MyBlog/target</output-path>
+    <root id="archive" name="MyBlog.war" />
+  </artifact>
+</component>

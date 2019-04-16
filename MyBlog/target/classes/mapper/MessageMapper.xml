@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ph.mapper.MessageMapper">
+    <insert id="addMessageViaName">
+        insert into message
+        <trim prefix="(" suffix=")values" suffixOverrides=",">
+            <if test="messageName != null">
+                  message_name,
+            </if>
+            <if test="messageBloggerId != null">
+                  message_blogger_id,
+            </if>
+            <if test="messageEmail != null">
+                message_email,
+            </if>
+            <if test="messageContent != null">
+                message_content,
+            </if>
+            <if test="messageOpen != null">
+                message_open,
+            </if>
+            <if test="messageCreateTime != null">
+                message_create_time,
+            </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="messageName != null">
+                #{messageName},
+            </if>
+            <if test="messageBloggerId != null">
+                #{messageBloggerId},
+            </if>
+            <if test="messageEmail != null">
+                #{messageEmail},
+            </if>
+            <if test="messageContent != null">
+                #{messageContent},
+            </if>
+            <if test="messageOpen != null">
+                #{messageOpen},
+            </if>
+            <if test="messageCreateTime != null">
+                #{messageCreateTime},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delMessageViaId">
+        delete from message where message_id=#{messageId};
+    </delete>
+    <select id="queryAllMessages" resultType="com.ph.pojo.Message">
+        select *from message where message_blogger_id=#{bloggerId} order by message_id desc;
+    </select>
+
+    <update id="changeToOpen">
+        UPDATE message SET message_open= 1 WHERE message_id=#{messageId};
+    </update>
+    <update id="changeToSecret">
+        UPDATE message SET message_open= 0 WHERE message_id=#{messageId};
+    </update>
+    <select id="queryPublicMessages" resultType="com.ph.pojo.Message">
+        select *from message where message_blogger_id=#{bloggerId} and message_open= 1 order by message_id desc;
+    </select>
+</mapper>
