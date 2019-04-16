@@ -1,9 +1,9 @@
 # Blog
 基于SSM的个人博客系统
 
-用到 Spring , mybatis, SpringMvc, bootstrap, mysql, jsp等等。
+用到 Spring , mybatis, SpringMvc, bootstrap, mysql5.6, jsp等等。
 
-大概界面不怎么好看，主要功能基本实现。
+界面不怎么好看，主要功能基本实现。
 
 演示地址：http://112.74.176.226/blogger/main
 
